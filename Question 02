@@ -1,0 +1,46 @@
+#2a.	How many orders were shipped by Speedy Express in total?
+
+#Ans)
+ 
+SELECT 
+count(o.OrderID) as Total_orders_shipped,
+  s.ShipperName as Shipper_name
+FROM [Orders] as o
+Inner Join [Shippers] as s
+On s.ShipperID= o.ShipperID
+Where s.ShipperName = 'Speedy Express';
+
+The total number of orders was 54.
+
+#2b.	What is the last name of the employee with the most orders?
+#Ans)
+SELECT 
+  distinct o.EmployeeID as Top_EmployeeID,
+  e.LastName as Employee_Last_Name,
+  count(o.orderID) as Order_amount
+FROM [Orders] as o
+Inner Join employees as e
+  on e.employeeID = o.employeeID
+Group by e.employeeID
+Order by Order_amount Desc
+limit 1;
+
+#The last name is Peacock
+
+#2c.	What product was ordered the most by customers in Germany?
+
+#Ans)
+SELECT 
+  p.ProductName as ProductName, 
+  SUM(od.Quantity) as TotalQuantity
+FROM Orders as o, OrderDetails as od, Customers as c, Products as p
+WHERE 
+  c.Country = "Germany" 
+  AND od.OrderID = o.OrderID 
+  AND od.ProductID = p.ProductID 
+  AND c.CustomerID = o.CustomerID
+GROUP BY p.ProductID
+ORDER BY TotalQuantity DESC
+LIMIT 1;
+
+#The product name is Boston Crab Meat (160 total) from Germany.
